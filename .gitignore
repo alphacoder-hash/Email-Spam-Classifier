@@ -1,0 +1,28 @@
+# Environments
+venv/
+.env
+.venv
+env/
+venv.bak/
+ENV/
+
+# Python caching
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# VS Code / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data / Model storage (Optional: Keep models if small, ignore if large)
+# models/*.pkl
+
+# Distribution / Build
+dist/
+build/
+*.egg-info/

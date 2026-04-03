@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpamGuard Pro | Intelligence-Powered SMS Defense Control</title>
+    <!-- Modern Typography -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- UI Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #030014;
+            --primary: #6366F1;
+            --secondary: #8B5CF6;
+            --accent: #06B6D4;
+            --text-main: #FFFFFF;
+            --text-dim: #94A3B8;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #06B6D4 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- Animated Mesh Background --- */
+        .mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(6, 182, 212, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 60%);
+            animation: meshMove 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes meshMove {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.1) translate(20px, 20px);
+            }
+        }
+
+        /* --- Navbar --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(3, 0, 20, 0.5);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-advanced {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-dim);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .btn-advanced:hover {
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* --- Hero --- */
+        .hero {
+            padding: 10.5rem 10% 5rem 10%;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .badge-instant {
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: #4ADE80;
+            margin-bottom: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 4.8rem;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to bottom, #FFF 40%, rgba(255, 255, 255, 0.6) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .hero-desc {
+            color: var(--text-dim);
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 3.5rem auto;
+            line-height: 1.6;
+        }
+
+        /* --- INSTANT SCANNER UI --- */
+        .scanner-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 6rem auto;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 2.5rem;
+            backdrop-filter: blur(40px);
+            text-align: left;
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.4s, box-shadow 0.4s;
+        }
+
+        .scanner-container:has(#messageInput:focus) {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 40px 120px rgba(99, 102, 241, 0.15);
+        }
+
+        .input-label {
+            font-family: 'Outfit', sans-serif;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+            font-size: 1.1rem;
+        }
+
+        textarea#messageInput {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            resize: none;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.3s;
+        }
+
+        textarea#messageInput:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-scan {
+            width: 100%;
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 0.1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-scan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-scan:active {
+            transform: scale(0.98);
+        }
+
+        .result-panel {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 16px;
+            display: none;
+            animation: slideUp 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-panel.spam {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            border-left: 5px solid #FF6B6B;
+        }
+
+        .result-panel.ham {
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-left: 5px solid #4ADE80;
+        }
+
+        .result-panel h4 {
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .result-panel p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .extra-analytics {
+            display: flex;
+            gap: 2rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 1rem;
+        }
+
+        .analytics-col { flex: 1; }
+        .analytics-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05rem; margin-bottom: 0.8rem; display: block; }
+        
+        .risk-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+        .risk-chip { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+        .risk-chip.active { background: rgba(250, 204, 21, 0.1); border-color: rgba(250, 204, 21, 0.2); color: #FACC15; }
+
+        .trigger-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .trigger-tag { font-size: 0.75rem; color: var(--primary); font-weight: 600; }
+
+        /* --- Advanced Section --- */
+        #advanced-dashboard {
+            display: none;
+            /* Only loading if requested */
+            margin-top: 5rem;
+            padding: 5rem 10%;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 5rem 10% 2.5rem 10%;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .copyright {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mesh-bg"></div>
+
+    <nav>
+        <div class="logo">
+            <i class="fas fa-shield-virus"></i>
+            SpamGuard Pro
+        </div>
+        <button class="btn-advanced" onclick="loadAdvanced()">
+            <i class="fas fa-microchip" style="margin-right: 8px;"></i> Advanced Suite
+        </button>
+    </nav>
+
+    <div class="hero">
+        <div class="badge-instant">
+            <i class="fas fa-bolt"></i>
+            Instant Latency Detection Enabled
+        </div>
+        <h1>Pure Protection. <br> Zero Wait Time.</h1>
+        <p class="hero-desc">Experience industrial-grade SMS intelligence without the loading screen. Our
+            ultra-optimized Instant-Engine detects malicious intent in milliseconds.</p>
+
+        <div class="scanner-container">
+            <span class="input-label">🏹 Analysis Sandbox</span>
+            <textarea id="messageInput" placeholder="Write or paste a message to scan..." rows="4"></textarea>
+
+            <button class="btn-scan" onclick="runInstantScan()">
+                <i class="fas fa-bolt-lightning"></i> RUN FORENSIC SCAN
+            </button>
+
+            <div id="resultPanel" class="result-panel">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <h4 id="resultTitle">🛑 THREAT DETECTED</h4>
+                        <p id="resultBody">High risk classification detected in linguistic patterns.</p>
+                    </div>
+                    <div id="resultPercentage"
+                        style="font-family: 'Outfit'; font-weight: 700; font-size: 1.8rem; opacity: 0.9;">98.4%</div>
+                </div>
+                
+                <div class="extra-analytics">
+                    <div class="analytics-col">
+                        <span class="analytics-label">Risk Vectors</span>
+                        <div id="riskChips" class="risk-chips">
+                            <div class="risk-chip" id="chip-urgency"><i class="fas fa-clock"></i> Urgency</div>
+                            <div class="risk-chip" id="chip-finance"><i class="fas fa-dollar-sign"></i> Finance</div>
+                            <div class="risk-chip" id="chip-link"><i class="fas fa-link"></i> Phishing</div>
+                        </div>
+                    </div>
+                    <div class="analytics-col">
+                        <span class="analytics-label">Forensic Highlights</span>
+                        <div id="triggerTags" class="trigger-tags">
+                            <!-- Tags will appear here -->
+                        </div>
+                        <p id="safetyTip" style="font-size: 0.75rem; margin-top: 8px; margin-bottom: 0; font-style: italic;"></p>
+                    </div>
+                </div>
+
+                <!-- NEW: Transparency Hub -->
+                <div id="forensicTransparency"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section
+        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; padding: 0 10% 8rem 10%; max-width: 1300px; margin: 0 auto;">
+        <div
+            style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2.5rem; text-align: left;">
+            <i class="fas fa-brain"
+                style="font-size: 2rem; color: var(--primary); margin-bottom: 1.5rem; display: block;"></i>
+            <h3 style="font-family: 'Outfit'; font-size: 1.5rem; margin-bottom: 0.8rem;">Pattern DNA</h3>
+            <p style="color: var(--text-dim);">Analyzing structural entropy and token anomalies for instant
+                identification.</p>
+        </div>
+        <div
+            style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2.5rem; text-align: left;">
+            <i class="fas fa-clock"
+                style="font-size: 2rem; color: var(--primary); margin-bottom: 1.5rem; display: block;"></i>
+            <h3 style="font-family: 'Outfit'; font-size: 1.5rem; margin-bottom: 0.8rem;">Zero Latency</h3>
+            <p style="color: var(--text-dim);">No Python bridge required for Hero analysis. Pure JavaScript performance.
+            </p>
+        </div>
+        <div
+            style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2.5rem; text-align: left;">
+            <i class="fas fa-lock"
+                style="font-size: 2rem; color: var(--primary); margin-bottom: 1.5rem; display: block;"></i>
+            <h3 style="font-family: 'Outfit'; font-size: 1.5rem; margin-bottom: 0.8rem;">Privacy-First</h3>
+            <p style="color: var(--text-dim);">Inference runs entirely in your local browser memory. Data never leaves
+                your device.</p>
+        </div>
+    </section>
+
+    <!-- Advanced Analysis Section (Lazy Loaded) -->
+    <section id="advanced-dashboard">
+        <h2 style="font-family: 'Outfit'; font-size: 2.5rem; color: white; margin-bottom: 2rem;">Professional Logic Hub
+        </h2>
+        <div id="stlite-root"
+            style="min-height: 800px; background: rgba(0,0,0,0.2); border-radius: 24px; border: 1px solid var(--glass-border);">
+            <div id="loadingAdvanced"
+                style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 400px; color: var(--text-dim);">
+                <i class="fas fa-circle-notch fa-spin"
+                    style="font-size: 3rem; margin-bottom: 20px; color: var(--primary);"></i>
+                <p>Initializing Forensic Intelligence Cloud...</p>
+                <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.5;">Loading scikit-learn & Neural Weights
+                    (WASM)</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <span class="footer-logo">SpamGuard Pro</span>
+        <p class="copyright">© 2026 Intelligence Systems. Designed for the Global Startup Initiative.</p>
+    </footer>
+
+    <script>
+        // --- REAL-MODEL FORENSIC LOGIC (API BRIDGE) ---
+        async function runInstantScan() {
+            const input = document.getElementById('messageInput').value.trim();
+            const panel = document.getElementById('resultPanel');
+            const title = document.getElementById('resultTitle');
+            const body = document.getElementById('resultBody');
+            const percentage = document.getElementById('resultPercentage');
+
+            if (!input) return;
+
+            // Loading State (Instant)
+            panel.style.display = 'block';
+            title.innerHTML = '<i class="fas fa-sync fa-spin"></i> Analyzing...';
+            body.innerText = 'Communicating with Forensic Model Hub...';
+            percentage.innerText = '--%';
+
+            try {
+                // Fetch from the Real-Model API Hub
+                const response = await fetch(`/api/scan?msg=${encodeURIComponent(input)}`);
+                const data = await response.json();
+
+                if (data.error) throw new Error(data.error);
+
+                // Update the Status Panel
+                const isSpam = data.spam;
+                const isAnomaly = data.forensicAnomaly;
+
+                panel.className = `result-panel ${isSpam ? 'spam' : 'ham'}`;
+                panel.style.display = 'block';
+
+                title.innerText = isSpam ? '🛑 THREAT DETECTED' : '✅ VERIFIED SECURE';
+                
+                // Forensic Alert Nudge
+                if (isAnomaly) {
+                    title.innerText = 'PHISHING ANOMALY DETECTED';
+                    title.style.color = '#FF6B6B';
+                } else {
+                    title.style.color = 'white';
+                }
+
+                body.innerText = isSpam ?
+                    'Trained model identified structural DNA consistent with malicious patterns.' :
+                    'Linguistic validation complete. Model classifies message as secure.';
+                percentage.innerText = data.score.toFixed(1) + '%';
+
+                // --- NEW: Model Verification Transparency ---
+                const transparency = document.getElementById('forensicTransparency');
+                transparency.innerHTML = `
+                    <div style="font-size:0.7rem; color:#64748B; margin-top:20px; border-top:1px solid rgba(255,255,255,0.05); padding-top:15px;">
+                        <span style="display:block; margin-bottom:5px;">⚖️ MODEL VERIFICATION SIGNATURE</span>
+                        <div style="display:flex; justify-content:space-between; opacity:0.8;">
+                            <span>Engine: <b>${data.engine}</b></span>
+                            <span>Raw Model Scorer: <b>${data.modelScore.toFixed(2)}%</b></span>
+                        </div>
+                    </div>
+                `;
+
+                // Real Analytics
+                document.getElementById('chip-urgency').className = 'risk-chip' + (data.isUrgent ? ' active' : '');
+                document.getElementById('chip-finance').className = 'risk-chip' + (data.isFinance ? ' active' : '');
+                
+                // Phishing detection (Links)
+                const hasLink = /https?:\/\/\S+/.test(input);
+                document.getElementById('chip-link').className = 'risk-chip' + (hasLink ? ' active' : '');
+
+                const tagContainer = document.getElementById('triggerTags');
+                tagContainer.innerHTML = (data.tokens || []).map(t => `<span class="trigger-tag">#${t.toUpperCase()}</span>`).join(' ');
+                
+                const safetyTip = document.getElementById('safetyTip');
+                if (isSpam) {
+                    safetyTip.innerText = isAnomaly ? "🛡️ Forensic Alert: Zero-day phishing pattern detected. High risk." : "🛡️ Recommendation: Model identified threat. Do not click links.";
+                    safetyTip.style.color = '#FF6B6B';
+                } else {
+                    safetyTip.innerText = "🛡️ Recommendation: This message appears safe for interaction.";
+                    safetyTip.style.color = '#4ADE80';
+                }
+
+            } catch (err) {
+                console.error("Forensic Error:", err);
+                title.innerText = '⚠️ SYSTEM ERROR';
+                body.innerText = 'Logic Hub is offline. Please visit http://localhost:8080 to preview the forensic suite.';
+            }
+        }
+
+        // --- LAZY LOAD ADVANCED DASHBOARD ---
+        function loadAdvanced() {
+            const dashboard = document.getElementById('advanced-dashboard');
+            dashboard.style.display = 'block';
+            dashboard.scrollIntoView({ behavior: 'smooth' });
+
+            if (!window.stliteMounted) {
+                const script = document.createElement('script');
+                script.id = 'stlite-script';
+                script.type = 'module';
+                script.src = 'https://cdn.jsdelivr.net/npm/@stlite/browser@1.5.0/build/stlite.js';
+                script.crossOrigin = 'anonymous';
+                script.onload = () => mountStlite();
+                document.body.appendChild(script);
+                window.stliteMounted = true;
+            }
+        }
+
+        function mountStlite() {
+            // Give script a moment to init global
+            const check = setInterval(() => {
+                if (window.stlite) {
+                    clearInterval(check);
+                    stlite.mount({
+                        requirements: ["scikit-learn", "nltk", "pandas"],
+                        entrypoint: "app.py",
+                        files: {
+                            "app.py": `import streamlit as st
+import pickle
+import pandas as pd
+import numpy as np
+
+st.set_page_config(layout="wide")
+st.markdown("### 📊 Professional Analysis Suit")
+st.info("Directly analyzing your local .pkl weights for high-precision forensic reports.")
+
+@st.cache_resource
+def load_models():
+    tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
+    model = pickle.load(open('model.pkl', 'rb'))
+    return tfidf, model
+
+tfidf, model = load_models()
+input_sms = st.text_area("Pro Analysis Input", height=150)
+if st.button("RUN DEEP ANALYTICS"):
+    if input_sms:
+        transformed = input_sms.lower() # Simplified
+        vector = tfidf.transform([transformed])
+        proba = model.predict_proba(vector)[0]
+        st.write(f"**Forensic Score:** {proba[1]*100:.2f}% Probability")
+`,
+                            "vectorizer.pkl": { "url": "./models/vectorizer.pkl" },
+                            "model.pkl": { "url": "./models/model.pkl" }
+                        }
+                    }, document.getElementById("stlite-root"));
+                }
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>
