@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import pickle
 import os
 import sys
@@ -27,9 +27,13 @@ model = None
 def load_models():
     global tfidf, model
     if tfidf is None:
+        if not os.path.exists(VECTORIZER_PATH):
+            raise FileNotFoundError(f"Vectorizer missing at {VECTORIZER_PATH}")
         with open(VECTORIZER_PATH, 'rb') as f:
             tfidf = pickle.load(f)
     if model is None:
+        if not os.path.exists(MODEL_PATH):
+            raise FileNotFoundError(f"Model missing at {MODEL_PATH}")
         with open(MODEL_PATH, 'rb') as f:
             model = pickle.load(f)
 
@@ -61,7 +65,6 @@ def scan():
         
         if is_delivery_scam:
             forensic_anomaly = True
-            # We flag it as an anomaly if it's potentially a zero-day delivery scam
         
         response = {
             "score": final_score,
@@ -81,8 +84,10 @@ def scan():
 
 @app.route('/')
 def home():
-    return send_from_directory(parent_dir, 'index.html')
+    try:
+        return send_from_directory(parent_dir, 'index.html')
+    except Exception as e:
+        return f"Static Loader Error: {str(e)}", 500
 
 if __name__ == '__main__':
-    from flask import send_from_directory
     app.run(port=8080)
