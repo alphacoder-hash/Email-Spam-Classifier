@@ -35,23 +35,7 @@ source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 pip install scikit-learn nltk pandas
 ```
 
-## Cloud Deployment: Vercel
-
-SpamGuard Pro is fully optimized for **Vercel's Serverless Runtime**. 
-
-### 1. Push to GitHub
-If you haven't already, push your code to your GitHub repository:
-```bash
-git add .
-git commit -m "Deploy: Vercel Cloud Architecture"
-git push origin main
-```
-
-### 2. Connect to Vercel
-1.  Go to [vercel.com](https://vercel.com) and click **"Add New Project"**.
-2.  Import your **`sms-spam-classifier`** repository.
-3.  Vercel will automatically detect the **`vercel.json`** and build your Python backend (`/api/index.py`).
-4.  Once deployed, your premium **`index.html`** will be live with full model support!
+---
 
 ---
 
