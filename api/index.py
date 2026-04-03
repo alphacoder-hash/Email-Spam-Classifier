@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 import pickle
 import os
 import sys
@@ -72,14 +72,6 @@ def scan():
         print(f"CRITICAL FORENSIC ERROR: {str(e)}")
         print(traceback.format_exc())
         return jsonify({"error": str(e)}), 500
-
-@app.route('/')
-def home():
-    try:
-        # Instant serve of frontend without loading models
-        return send_from_directory(str(ROOT_DIR), 'index.html')
-    except Exception as e:
-        return f"System Initialization Error: {str(e)}", 500
 
 if __name__ == '__main__':
     app.run(port=8080)
