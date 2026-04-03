@@ -3,10 +3,18 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import string
 
-# Download necessary NLTK data
-nltk.download('punkt')
-nltk.download('punkt_tab')
-nltk.download('stopwords')
+import os
+
+# Configure NLTK to use /tmp/ on Vercel for writable space
+nltk_data_dir = '/tmp/nltk_data'
+if not os.path.exists(nltk_data_dir):
+    os.makedirs(nltk_data_dir)
+nltk.data.path.append(nltk_data_dir)
+
+# Download necessary NLTK data quietly
+nltk.download('punkt', download_dir=nltk_data_dir, quiet=True)
+nltk.download('punkt_tab', download_dir=nltk_data_dir, quiet=True)
+nltk.download('stopwords', download_dir=nltk_data_dir, quiet=True)
 
 ps = PorterStemmer()
 
