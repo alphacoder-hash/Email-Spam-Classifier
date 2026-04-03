@@ -11,14 +11,19 @@ if not os.path.exists(nltk_data_dir):
     os.makedirs(nltk_data_dir)
 nltk.data.path.append(nltk_data_dir)
 
-# Download necessary NLTK data quietly
-nltk.download('punkt', download_dir=nltk_data_dir, quiet=True)
-nltk.download('punkt_tab', download_dir=nltk_data_dir, quiet=True)
-nltk.download('stopwords', download_dir=nltk_data_dir, quiet=True)
+def ensure_nltk_resources():
+    # Only download if not already cached in /tmp/
+    try:
+        nltk.data.find('tokenizers/punkt', paths=[nltk_data_dir])
+    except LookupError:
+        nltk.download('punkt', download_dir=nltk_data_dir, quiet=True)
+        nltk.download('punkt_tab', download_dir=nltk_data_dir, quiet=True)
+        nltk.download('stopwords', download_dir=nltk_data_dir, quiet=True)
 
 ps = PorterStemmer()
 
 def transform_text(text):
+    ensure_nltk_resources()
     text = text.lower()
     text = nltk.word_tokenize(text)
 
